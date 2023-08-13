@@ -4,20 +4,11 @@ import dummy_data from "../DUMMY_DATA.json" assert { type: "json" };
 
 const {GraphQLObjectType, GraphQLList, GraphQLInt, GraphQLString, GraphQLNonNull} = graphql;
 
-// when querying a toDo, the owner should be hidden as it is used for authentication
-const toDoWithoutOwner = (toDo) => {
-    return {
-        id: toDo.id,
-        description: toDo.description,
-        priority: toDo.priority
-    }
-};
-
 // Query Schema
 const getAllToDos = {
     type: new GraphQLNonNull(new GraphQLList(ToDoType)),
     description: 'List of All ToDos',
-    resolve: () => dummy_data.map(toDoWithoutOwner)
+    resolve: () => dummy_data
 };
 
 const getToDoByID = {
@@ -26,7 +17,7 @@ const getToDoByID = {
     args: {
         id: {type: GraphQLInt}
     },
-    resolve: (parent, args) => toDoWithoutOwner(dummy_data.find(todo => todo.id === args.id))
+    resolve: (parent, args) => dummy_data.find(todo => todo.id === args.id)
 };
 
 const getToDoByDescription = {
@@ -36,7 +27,7 @@ const getToDoByDescription = {
         description: {type: GraphQLString}
     },
     resolve(parent, args){
-        return dummy_data.filter(todo => todo.description === args.description).map(toDoWithoutOwner);
+        return dummy_data.filter(todo => todo.description === args.description);
     }
 };
 
@@ -47,18 +38,9 @@ const getToDoByPriority = {
         priority: {type: GraphQLString}
     },
     resolve(parent, args){
-        return dummy_data.filter(todo => todo.priority === args.priority).map(toDoWithoutOwner);
+        return dummy_data.filter(todo => todo.priority === args.priority);
     }
 };
-
-// const getToDoByOwner = {
-//     type: new GraphQLNonNull(new GraphQLList(ToDoType)),
-//     description: 'ToDos by Owner',
-//     args: {
-//         owner: {type: GraphQLString}
-//     },
-//     resolve: (parent, args) => dummy_data.filter(todo => todo.owner === args.owner)
-// };
 
 const RootQuery = new GraphQLObjectType({
     name: "RootQueryType",
@@ -67,7 +49,6 @@ const RootQuery = new GraphQLObjectType({
         getToDoByID: getToDoByID,
         getToDoByDescription: getToDoByDescription,
         getToDoByPriority: getToDoByPriority
-        // getToDoByOwner: getToDoByOwner
     }
 });
 

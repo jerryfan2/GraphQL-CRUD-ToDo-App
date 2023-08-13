@@ -6,7 +6,6 @@ const CreateToDoInputType = new GraphQLInputObjectType({
     fields: {
         description: { type: new GraphQLNonNull(GraphQLString) },
         priority: { type: new GraphQLNonNull(GraphQLString) },
-        owner: { type: new GraphQLNonNull(GraphQLString) }
     }
 });
 

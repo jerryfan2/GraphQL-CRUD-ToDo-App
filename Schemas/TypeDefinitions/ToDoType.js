@@ -8,7 +8,6 @@ const ToDoType = new GraphQLObjectType({
         id: { type: GraphQLInt },
         description: { type: GraphQLString },
         priority: { type: GraphQLString },
-        owner: { type: GraphQLString }
     })
 })
 
